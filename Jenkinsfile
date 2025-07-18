@@ -1,7 +1,9 @@
-pipeline {
+
+
+       pipeline {
     agent any
 
-    environment {
+environment {
        AWS_CREDENTIALS_ID = credentials'82dca514-9733-40cd-93fa-7c8b8f6aee42'  // Replace with actual AWS credential ID
     }
 
@@ -10,34 +12,40 @@ pipeline {
     }
 
     stages {
-        stage('Checkout SCM') {
+        
+        stage('Checkout Terraform Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/jayalakshmi601/jenkins-pratical1.git'
+                git branch: 'main',
+                   
+                    url: 'https://github.com/jayalakshmi601/jenkins-pratical1.git'
             }
         }
 
-        stage('Initialize Terraform') {
+        stage('Terraform Init') {
             steps {
                 sh 'terraform init'
             }
         }
 
-        stage('Plan Terraform') {
+        stage('Terraform Plan') {
             steps {
-                sh 'terraform plan -out=tfplan'
+                sh 'terraform plan'
             }
         }
 
-        stage('Apply or Destroy') {
+        stage('Terraform Apply') {
             steps {
-                script {
-                    if (params.ACTION == 'apply') {
-                        sh 'terraform apply -auto-approve tfplan'
-                    } else {
-                        sh 'terraform destroy -auto-approve'
-                    }
-                }
+                sh 'terraform apply -auto-approve'
             }
+        }
+    }
+
+    post {
+        failure {
+            echo 'Pipeline failed.'
+        }
+        success {
+            echo 'Pipeline completed successfully.'
         }
     }
 }
