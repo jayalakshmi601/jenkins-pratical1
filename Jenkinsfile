@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Checkout SCM') {
             steps {
-                git branch: 'main', url: 'https://github.com/jayalakshmi601/terraform.git'
+                git branch: 'main', url: 'https://github.com/jayalakshmi601/jenkins-pratical1.git'
             }
         }
 
